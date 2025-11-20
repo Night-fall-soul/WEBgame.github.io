@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="game.js"></script>
+    <script src="elements.js"></script>
     <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +13,7 @@
         <div class="game-container">
             <canvas id="game"></canvas>
         </div>
+
         <div class="quick-menu-container" >
             <h1>Fin de Partie</h1>
             <h3>Votre score :</h3>
@@ -20,20 +23,40 @@
         </div>
 
         <div class="main-menu-container">
-            <label for="name">Nom du joueur:</label>
-            <input
-            type="text"
-            id="name-field"
-            name="name"/>
-         
-        
-        <select name="name" id="difficulty">
-            <option value="Facile">Facile</option>
-            <option value="Moyen">Moyen</option>
-            <option value="Difficile">Difficile</option>
-        </select>
-             
+            <div>
+                <label for="name">Nom du joueur:</label>
+                <input
+                type="text"
+                id="name-field"
+                name="name"/>
+            </div>
+            
+        <div>
+            <select name="name" id="difficulty">
+                <option value="Facile">Facile</option>
+                <option value="Moyen">Moyen</option>
+                <option value="Difficile">Difficile</option>
+            </select>
         </div>
+
+        <div>
+        <!-- Classement -->
+        <h3 style="margin:14px 0 6px;font-size:16px">Classement (session)</h3>
+        <table aria-label="Classement de session">
+          <thead>
+            <tr>
+              <th>#</th><th>Pseudo</th><th>Score</th><th>Diff.</th><th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="boardBody"></tbody>
+        </table>
+        </div>
+
+        <button id="" class="">JOUER</button>
+        
+        </div>
+
+
     </main>
 </body>
 </html>
