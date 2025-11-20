@@ -1,0 +1,15 @@
+html, body, main {
+    margin: 0;
+    justify-content: center;
+    box-sizing: border-box;
+    display:flex;
+}
+
+.game-container, .quick-menu-container, .main-menu-container {
+    box-sizing: border-box;
+    display: flex;
+    margin: auto;
+    width: 70vw;
+    height: 90vh;
+    border: 2px solid black;
+}
