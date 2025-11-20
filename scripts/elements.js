@@ -1,21 +1,28 @@
 // create-dom-elements.js
-const containers = ["game-container", "quick-menu-container", "main-menu-container"]
+const containers = [
+    "game-container",
+    "game-over-container",
+    "quick-menu-container",
+    "main-menu-container",
+];
 
 export function createGameContainer() {
-    const container = document.createElement('div');
-    container.id = 'game-container';
-    container.class = 'game-container';
+    const container = document.createElement("div");
+    container.id = "game-container";
+    container.class = "global-container";
 
-    containers.forEach((existingContainer) => { // Ús correcte de Array.prototype.forEach
+    const canvas = document.createElement("canvas");
+    container.appendChild(canvas);
+
+    containers.forEach((existingContainer) => {
+        // Ús correcte de Array.prototype.forEach
         const elem = document.getElementById(existingContainer);
         if (elem) {
             elem.remove();
         }
     });
+
     document.body.appendChild(container);
-    return container;
 }
 
-export function createQuickMenuContainer() {
-
-}
+export function createQuickMenuContainer() { }

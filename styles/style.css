@@ -3,13 +3,21 @@ html, body, main {
     justify-content: center;
     box-sizing: border-box;
     display:flex;
+    flex-wrap: wrap;
 }
 
-.game-container, .quick-menu-container, .main-menu-container {
+.global-container {
     box-sizing: border-box;
     display: flex;
     margin: auto;
+
+    /* Sorry for hard-coding it like this but it's kinda useful for our purpose:
+     * 100vh - 90 vh = 10vh so 5 on top and 5 on bottom */
+    margin-top: 5vh;
     width: 70vw;
     height: 90vh;
     border: 2px solid black;
+
+    /* Top to bottom order (natural order in this situation) */
+    flex-direction: column;
 }
