@@ -21,3 +21,7 @@ html, body, main {
     /* Top to bottom order (natural order in this situation) */
     flex-direction: column;
 }
+
+.global-container:last-child {
+    margin-bottom: 5vh;
+}
