@@ -1,19 +1,21 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script src="scripts/elements.js"></script>
+    <script type="module" src="scripts/main.js"></script>
     <link rel="stylesheet" href="styles/style.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
   <body>
-    <main id="main">
+    <div id="app">
+      <!--
       <!-- ON N'UTILISE <h1> QUE POUR LE TITRE DU JEU (juste choses de qualité du code (plus concretement pour trucs de SEO)) -->
       <!-- for further information: 
         >>> https://developers.google.com/search/docs/essentials/spam-policies?hl=en 
         > "SEO" = Search Engine Optimization -->
 
+      <!--
       <div class="global-container" id="game-container">
         <canvas id="game"></canvas>
       </div>
@@ -42,12 +44,11 @@
         </div>
 
         <div>
-          <!-- Classement -->
           <h3 style="margin: 14px 0 6px; font-size: 16px">
             Classement (session)
           </h3>
-          <!-- I wouldn't do a table here, just div summons by DOM... As you want. -->
-          <!-- DOM = Document Object Model (pour Amine) -->
+          // I wouldn't do a table here, just div summons by DOM... As you want.
+          // DOM = Document Object Model (pour Amine) 
           <table aria-label="Classement de session">
             <thead>
               <tr>
@@ -63,8 +64,8 @@
         </div>
 
         <button id="" class="">JOUER</button>
-        <!-- This is NOT a global container, just it's the pause menu.
-           Therefore is a popup, therefore has different style than global-container. -->
+        // This is NOT a global container, just it's the pause menu.
+        // Therefore is a popup, therefore has different style than global-container. 
         <div class="pause" id="pause-menu-container">
           <h2>Partie en jeu</h2>
           <div id="current-score">
@@ -75,7 +76,7 @@
           <button id="">Revenir en Menu</button>
           <button id="">Rejouer</button>
         </div>
-      </div>
-    </main>
+      </div>-->
+    </div>
   </body>
 </html>

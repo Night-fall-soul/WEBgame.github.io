@@ -12,3 +12,5 @@
 - [ ] OPTIONNEL: Implémentation de Pause_game
 - [ ] OPTIONNEL: Thèmes (différents)
 - [ ] OPTIONNEL: Sons (collision, mouvement, chute d'objet)
+
+[[discheme.jpeg]]
