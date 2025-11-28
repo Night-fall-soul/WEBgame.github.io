@@ -75,6 +75,20 @@ class DOMRender {
             this.hideContainer(container);
         });
     }
+
+    drawPlayer(x, y) {
+        //todo !
+    }
+
+    drawObstacle(x, y) { }
+
+    // drawBullet() {}
+
+    drawScore(score) { }
+
+    removeElement(elementId) { }
+
+    getCanvasDimensions() { }
 }
 
 export default DOMRender;

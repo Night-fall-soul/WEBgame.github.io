@@ -6,12 +6,31 @@ class Player {
         this.position = position;
         this.jett_dash = game_level == 3 ? true : false;
     }
-    movement() {
-        this.position[0]
+
+    update() {
+        // updates everything ok
     }
-    activation_dash(game_level) {
-        if (game_level == 3) {
-            this.jett_dash = true;
-        }
+
+    move(direction) {
+        // calculates the new direction of movement
+    }
+
+    dash() {
+        // Initializes a movement of high velocity
+    }
+
+    // shoot() {}
+    
+    canDash() {
+
+    }
+
+    hit() {
+        //when the colissionmanager detects a 
+    }
+
+    getBounds() {
+        // get player dimensions and position delimitation
+            
     }
 }
