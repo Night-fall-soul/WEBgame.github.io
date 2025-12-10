@@ -1,5 +1,7 @@
 # WEBgame.github.io
 ## 📋 Tâches pour WEBgame.github.io
+-# ole ole viva el jamón serrano
+
 
 - [ ] Développement du Joueur (nom, contrôle par flèches)
 - [ ] Mise en place des Obstacles (différents types, mouvement haut-bas, gestion de la vitesse selon difficulté)
@@ -13,4 +15,6 @@
 - [ ] OPTIONNEL: Thèmes (différents)
 - [ ] OPTIONNEL: Sons (collision, mouvement, chute d'objet)
 
-[[discheme.jpeg]]
+i did the domrender
+
+![[discheme.jpeg]]

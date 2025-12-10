@@ -62,12 +62,13 @@ class DOMRender {
         this.showContainer(this.containers.mainMenu);
     }
 
-    showContainer(container) {
-        if (container) container.style.display = "block";
+    showContainer(key) {
+        this.hideAllContainers();
+        if (this.containers[key]) container.style.display = "flex";
     }
 
-    hideContainer(container) {
-        if (container) container.style.display = "none";
+    hideContainer(key) {
+        if (this.containers[key]) container.style.display = "none";
     }
 
     hideAllContainers() {
@@ -76,19 +77,61 @@ class DOMRender {
         });
     }
 
-    drawPlayer(x, y) {
-        //todo !
+    /**
+     * Creates a DOM element for a game entituy (Player or Obstacle)
+     * @param {object} entity
+     */
+    renderTemplate(entity) {
+        const gameArea = document.getElementById("game-area");
+        if (!gameArea) return;
+
+        let el = document.getElementById(entity.id || `entity-${entity.type}`);
+
+        if (!el) {
+            el = docuemnt.createElement("div");
+            el.id = entity.id || `entity-${entity.type}-${Date.now()}`;
+            // Add a class for styling soon... may be .player or .obstacle
+            el.classList.add(entity.tupe ? entity.type.toLowerCase() : "obstacle");
+            el.style.position = "absolute";
+            gameArea.appendChild(el);
+        }
+
+        this.updateElementPosition(el, entity.x, entity.y);
+        return el;
     }
 
-    drawObstacle(x, y) { }
+    updateElementPosition(elementOrId, x, y) {
+        let el = elementOrId;
+        if (typeof elementOrId === "string") {
+            el = document.getElementById(elementOrId);
+        }
 
-    // drawBullet() {}
+        if (el) {
+            el.style.transform = `translate(${x}px, ${y}px)`;
+            // maybe ensuring w/h are set if not in css but not necessary if css
+        }
+    }
 
-    drawScore(score) { }
+    drawScore(score) {
+        const scoreEl = docuemnt.getElementById("score-value");
+        if (scoreEl) scoreEl.innerText = score;
+    }
 
-    removeElement(elementId) { }
+    removeElement(elementId) {
+        const el = document.getElementById(elementId);
+        if (el) el.remove();
+    }
 
-    getCanvasDimensions() { }
+    // return gamearea div dimensions
+    getCanvasDimensions() {
+        const gameArea = document.getElementById("game-area");
+        if (gameArea) {
+            return  {
+                width: gameArea.clientWidth,
+                height: gameArea.clientHeight
+            }
+        }
+    }
 }
 
 export default DOMRender;
