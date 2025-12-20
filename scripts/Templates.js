@@ -1,63 +1,79 @@
 export function createMainMenuContainer() {
     return `
-        <div>
-          <label for="name">Nom du joueur:</label>
-          <input type="text" id="name-field" name="name" />
-        </div>
+        <div class="menu-content">
+            <h2>Night Fall Soul</h2>
+            
+            <div class="input-group">
+                <label for="name-field">Nickname</label>
+                <input type="text" id="name-field" name="name" placeholder="Sparky sparky" />
+            </div>
 
-        <div>
-          <select name="name" id="difficulty">
-            <option value="Facile">Facile</option>
-            <option value="Moyen">Moyen</option>
-            <option value="Difficile">Difficile</option>
-          </select>
-        </div>
+            <div class="input-group">
+                <label for="difficulty">How difficult may your game be:</label>
+                <select name="difficulty" id="difficulty">
+                    <option value="Facile">ez</option>
+                    <option value="Moyen">normal</option>
+                    <option value="Difficile">67 difficulty</option>
+                </select>
+            </div>
 
-        <div>
-          <!-- Classement -->
-          <h3 style="margin: 14px 0 6px; font-size: 16px">
-            Classement (session)
-          </h3>
-          <!-- I wouldn't do a table here, just div summons by DOM... As you want. -->
-          <!-- DOM = Document Object Model (pour Amine) -->
-          <table aria-label="Classement de session">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Pseudo</th>
-                <th>Score</th>
-                <th>Diff.</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody id="board-body"></tbody>
-          </table>
-        </div>
+            <div class="scores-section">
+                <h3>Session ranking:<h3>
+                <table aria-label="Classement de session">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nick</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="board-body">
+                        </tbody>
+                </table>
+            </div>
 
-        <button id="" class="">JOUER</button>
-        <!-- This is NOT a global container, just it's the pause menu.
-           Therefore is a popup, therefore has different style than global-container. -->
-        <div class="pause" id="pause-menu-container">
-          <h2>Partie en jeu</h2>
-          <div id="current-score">
-            <h3>Current score:</h3>
-            <p id=""></p>
-          </div>
-          <button id="">Continuer avec la partie</button>
-          <button id="">Revenir en Menu</button>
-          <button id="">Rejouer</button>
+            <button id="start-btn">PLAY</button>
         </div>
-`;
-}
-
-export function createGameOverContainer() {
-    return `<p>finally u lost loser</p>`;
+    `;
 }
 
 export function createGameContainer() {
-    // todo...
+    return `
+        <div id="hud-layer">
+            <span>Score: <span id="score-value">0</span></span>
+        </div>
+
+        <div id="game-area">
+            </div>
+    `;
+}
+
+export function createGameOverContainer() {
+    return `
+        <div class="menu-content">
+            <h2>Game Over</h2>
+            <p>i know you hate this game but don't surrend</p>
+            
+            <div id="final-score-display">
+                <h3>final score: <span id="final-score-value">0</span></h3>
+            </div>
+            
+            <button id="restart-btn">Play again</button>
+            <button id="menu-btn">Main Menu</button>
+        </div>
+    `;
 }
 
 export function createQuickMenuContainer() {
-    // todo...
+    return `
+        <div class="menu-content pause-menu">
+            <h2>Pause</h2>
+            <div id="current-score-pause">
+                <h3>Score: <span id="pause-score-value">0</span></h3>
+            </div>
+            <button id="resume-btn">Resume</button>
+            <button id="restart-pause-btn">Play again</button>
+            <button id="quit-btn">Quit</button>
+        </div>
+    `;
 }

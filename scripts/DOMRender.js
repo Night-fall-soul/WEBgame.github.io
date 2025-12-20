@@ -59,21 +59,27 @@ class DOMRender {
         });
 
         this.hideAllContainers();
-        this.showContainer(this.containers.mainMenu);
+        this.showContainer("mainMenu");
     }
 
     showContainer(key) {
         this.hideAllContainers();
-        if (this.containers[key]) container.style.display = "flex";
+        const container = this.containers[key];
+        if (container) {
+            container.style.display = "flex";
+        } else {
+            console.error(`Container with key "${key}" not found.`);
+        }
     }
 
     hideContainer(key) {
+        const container = this.containers[key];
         if (this.containers[key]) container.style.display = "none";
     }
 
     hideAllContainers() {
-        Object.values(this.containers).forEach((container) => {
-            this.hideContainer(container);
+        Object.keys(this.containers).forEach((key) => {
+            this.hideContainer(key);
         });
     }
 
@@ -88,10 +94,11 @@ class DOMRender {
         let el = document.getElementById(entity.id || `entity-${entity.type}`);
 
         if (!el) {
-            el = docuemnt.createElement("div");
+            el = document.createElement("div");
             el.id = entity.id || `entity-${entity.type}-${Date.now()}`;
             // Add a class for styling soon... may be .player or .obstacle
-            el.classList.add(entity.tupe ? entity.type.toLowerCase() : "obstacle");
+            el.classList.add("entity");
+            el.classList.add(entity.type ? entity.type.toLowerCase() : "obstacle");
             el.style.position = "absolute";
             gameArea.appendChild(el);
         }
@@ -113,7 +120,7 @@ class DOMRender {
     }
 
     drawScore(score) {
-        const scoreEl = docuemnt.getElementById("score-value");
+        const scoreEl = document.getElementById("score-value");
         if (scoreEl) scoreEl.innerText = score;
     }
 
@@ -126,10 +133,10 @@ class DOMRender {
     getCanvasDimensions() {
         const gameArea = document.getElementById("game-area");
         if (gameArea) {
-            return  {
+            return {
                 width: gameArea.clientWidth,
-                height: gameArea.clientHeight
-            }
+                height: gameArea.clientHeight,
+            };
         }
     }
 }

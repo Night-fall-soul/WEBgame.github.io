@@ -1,9 +1,15 @@
-class KeyboardInput {
+export default class KeyboardInput {
     keyStates = new Map();
     keyPressCallbacks = new Map();
+    keys = {};
 
-    constructor () {
-        this.init();
+    constructor() {
+        window.addEventListener('keydown', (e) => this.keys[e.key] = true);
+        window.addEventListener('keyup', (e) => this.keys[e.key] = false);
+    }
+
+    isKeyPressed(key) {
+        return !!this.keys[key];
     }
 
     init() {
@@ -30,4 +36,3 @@ class KeyboardInput {
         // callback is a function "what we will do whenever this key is pressed"
     }
 }
-export default KeyboardInput;
