@@ -1,9 +1,8 @@
 /**
- * The main orchestrator of the game. Manages the game loop, initialization, 
+ * The main orchestrator of the game. Manages the game loop, initialization,
  * state transitions, and collision handling.
  */
 class Game {
-    
     // --- Internal State ---
     isPaused = true;
     lastFrameTime = 0;
@@ -16,7 +15,13 @@ class Game {
      * @param {object} collisionDetection - CollisionDetection instance.
      * @param {object} domRender - DOMRender instance.
      */
-    constructor(player, scoreManager, obstacleManager, collisionDetection, domRender) {
+    constructor(
+        player,
+        scoreManager,
+        obstacleManager,
+        collisionDetection,
+        domRender,
+    ) {
         // Store all injected dependencies
         this.player = player;
         this.scoreManager = scoreManager;
@@ -62,7 +67,7 @@ class Game {
      */
     update(deltaTime) {
         // 1. Update entities: this.player.update(deltaTime);
-        this.player.update(deltaTime)
+        this.player.update(deltaTime);
         this.domRender.renderTemplate(this.player);
         // 2. Update entities: this.obstacleManager.update(deltaTime);
         // 3. Handle collisions: this.handleCollisions();
@@ -70,17 +75,17 @@ class Game {
     }
 
     // --- State and Utility Functions ---
-    
+
     /**
      * Handles collision checks and delegates the reaction logic.
      */
     handleCollisions() {
         const obstacles = this.obstacleManager.getObstacles();
         const collision = this.collisionDetection.checkPlayerCollision(
-            this.player.getBounds(), 
-            obstacles
+            this.player.getBounds(),
+            obstacles,
         );
-        
+
         if (collision) {
             this.player.hit(); // Reaction logic delegated to Player
         }

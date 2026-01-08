@@ -4,7 +4,7 @@ class Player {
         y: 0,
     };
 
-    constructor(name, speed, position) {
+    constructor(name, position) {
         this.type = "Player";
         this.id = `player-${name}`;
 
@@ -179,7 +179,7 @@ class Player {
     }
 
     determine_directions() {
-        if (keys["ArrowUp"] || keys["KeyW"]) dy = -1;
+        if (keyboard) dy = -1;
         if (keys["ArrowDown"] || keys["KeyS"]) dy = 1;
         if (keys["ArrowLeft"] || keys["KeyA"]) dx = -1;
         if (keys["ArrowRight"] || keys["KeyD"]) dx = 1;
@@ -201,6 +201,7 @@ class Player {
 
     getLevel(level) {
         this.level = level;
+        this.speed = 8 * gameLevel * 1.2;
     }
 }
 

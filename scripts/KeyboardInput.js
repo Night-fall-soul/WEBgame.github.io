@@ -1,7 +1,8 @@
 export default class KeyboardInput {
     constructor() {
-        // i create a map and some event listeners to use them
-        this.keys = {};
+        this.bindingMap = bindingMap;
+        // Objeto para guardar el estado de las acciones: { 'jump': true, 'moveUp': false }
+        this.activeActions = {};
         this.init();
     }
 
@@ -14,10 +15,24 @@ export default class KeyboardInput {
       and i HATE event listeners (c gang) so better if i ignore this part
       (ill comment everything bc im kinda afraid that amine thing won't
       work but hope is the thing that lasts longer) */
+    /* Re-edit 2 hours later: i realized we weren't doing DI on the
+      input, so i changed a bit the workflow on this dependency. Now
+      should work as expected. :D*/
 
     init() {
-        window.addEventListener("keydown", (e) => (this.keys[e.key] = true));
-        window.addEventListener("keyup", (e) => (this.keys[e.key] = false));
+        window.addEventListener("keydown", (e) => {
+            const action = this.bindingMap[e.code];
+            if (action) {
+                this.activeActions[action] = true;
+            }
+        });
+
+        window.addEventListener("keyup", (e) => {
+            const action = this.bindingMap[e.code];
+            if (action) {
+                this.activeActions[action] = false;
+            }
+        });
     }
     /*
     handleKeyDown(event) {
