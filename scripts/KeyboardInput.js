@@ -1,22 +1,25 @@
 export default class KeyboardInput {
-    keyStates = new Map();
-    keyPressCallbacks = new Map();
-    keys = {};
-
     constructor() {
-        window.addEventListener('keydown', (e) => this.keys[e.key] = true);
-        window.addEventListener('keyup', (e) => this.keys[e.key] = false);
+        // i create a map and some event listeners to use them
+        this.keys = {};
+        this.init();
     }
 
     isKeyPressed(key) {
         return !!this.keys[key];
     }
 
-    init() {
-        widnow.addEventListener('keydown', this.handleKeyDown.bind(this));
-        // ..
-    }
+    /* I really thing this is bullshit seeing how amine has coded player,
+      but i gotta say I REALLY LIKE what amine did because it's simpler
+      and i HATE event listeners (c gang) so better if i ignore this part
+      (ill comment everything bc im kinda afraid that amine thing won't
+      work but hope is the thing that lasts longer) */
 
+    init() {
+        window.addEventListener("keydown", (e) => (this.keys[e.key] = true));
+        window.addEventListener("keyup", (e) => (this.keys[e.key] = false));
+    }
+    /*
     handleKeyDown(event) {
         // updates state:
         // key in true.
@@ -25,7 +28,7 @@ export default class KeyboardInput {
     }
 
     handleKeyUp(event) {
-        // idem but inversed 
+        // idem but inversed
     }
 
     isKeyPressed(keyName) {
@@ -35,4 +38,5 @@ export default class KeyboardInput {
     onKeyDown(keyName, callback) {
         // callback is a function "what we will do whenever this key is pressed"
     }
+    */
 }

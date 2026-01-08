@@ -17,6 +17,7 @@ class Player {
         this.lastDashTime = 0;
 
         this.bullets = [];
+        this.gameDifficulty;
     }
 
     update(deltaTime) {
@@ -84,7 +85,7 @@ class Player {
         // this.dom.renderTemplate (maybe not the best name) asks for an object
         // therefore we have to create a "bullet" object
         // then we will ask for the colission manager if we killed an enemy or not.
-        
+
         // 1. Création du visuel
         /*
                 const bulletEl = document.createElement('div');
@@ -97,7 +98,7 @@ class Player {
                 border-radius: 2px;
             `;
                 container.appendChild(bulletEl);
-        
+
                 // 2. Objet projectile vertical
                 const bullet = {
                     element: bulletEl,
@@ -108,10 +109,9 @@ class Player {
                 };*/
 
         const bullet = {
-            id: `bullet-${Date.now()}-${Math.random()}`, // ID único
-            type: "Bullet", // Para que DOMRender le ponga la clase .bullet
+            id: `bullet-${Date.now()}-${Math.random()}`, // unique id
+            type: "Bullet", // Domrender .bullet (css goes brr)
             position: {
-                // Estandarizamos usar 'position' como el player
                 x: this.position.x + 15,
                 y: this.position.y - 10,
             },
@@ -125,28 +125,28 @@ class Player {
         updateBullets(obstacles) {
             for (let i = this.bullets.length - 1; i >= 0; i--) {
                 const b = this.bullets[i];
-    
+
                 // Mouvement vers le haut (Y diminue)
                 b.y -= b.speed;
                 b.element.style.transform = `translate(${b.x}px, ${b.y}px)`;
-    
+
                 // Check Collision avec chaque obstacle
                 let hit = false;
                 for (let obs of obstacles) {
                     const ob = obs.getBounds();
-    
-                    // Collision simple 
+
+                    // Collision simple
                     if (b.x < ob.x + ob.width &&
                         b.x + 4 > ob.x &&
                         b.y < ob.y + ob.height &&
                         b.y + 15 > ob.y) {
-    
+
                         obs.hit(); // L'obstacle réagit
                         hit = true;
-                        break; 
+                        break;
                     }
                 }
-    
+
                 // Suppression (Sortie d'écran ou Impact)
                 if (hit || b.y < -20) {
                     b.element.remove();
@@ -197,6 +197,10 @@ class Player {
             return true;
         }
         return false;
+    }
+
+    getLevel(level) {
+        this.level = level;
     }
 }
 
