@@ -33,6 +33,8 @@ class Game {
     init() {
         // Calls reset() on ScoreManager and ObstacleManager.
         // Calls init() on DOMRender.
+        this.scoreManager.reset();
+        this.domRender.initializeContainers();
     }
 
     /**
@@ -49,6 +51,7 @@ class Game {
     gameLoop(currentTime) {
         // 1. Calculate deltaTime
         const deltaTime = currentTime - this.lastFrameTime;
+        this.update(deltaTime);
         // 2. Call this.update(deltaTime);
         // 3. Schedule next frame (requestAnimationFrame).
     }
@@ -59,6 +62,8 @@ class Game {
      */
     update(deltaTime) {
         // 1. Update entities: this.player.update(deltaTime);
+        this.player.update(deltaTime)
+        this.domRender.renderTemplate(this.player);
         // 2. Update entities: this.obstacleManager.update(deltaTime);
         // 3. Handle collisions: this.handleCollisions();
         // 4. Check win/loss state: if (!this.player.isAlive()) { this.gameOver(); }
