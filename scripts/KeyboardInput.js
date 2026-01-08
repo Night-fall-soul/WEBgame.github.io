@@ -1,7 +1,6 @@
 export default class KeyboardInput {
     constructor() {
         this.bindingMap = bindingMap;
-        // Objeto para guardar el estado de las acciones: { 'jump': true, 'moveUp': false }
         this.activeActions = {};
         this.init();
     }
