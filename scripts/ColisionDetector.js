@@ -18,7 +18,19 @@ class CollisionDetection {
      * @returns {object | null} Returns the colliding obstacle, or null.
      */
     checkPlayerCollision(playerBounds, obstacles) {
-        // Logic: Iterate through obstacles and use this.checkOverlap().
+        for (const obstacle of obstacles) {
+            const obstacleBounds = {
+                x: obstacle.x,
+                y: obstacle.y,
+                width: obstacle.width,
+                height: obstacle.height
+            };
+
+            if (this.checkOverlap(playerBounds, obstacleBounds)) {
+                return obstacle;
+            }
+        }
+
         return null;
     }
 
@@ -30,7 +42,12 @@ class CollisionDetection {
      */
     checkOverlap(boundsA, boundsB) {
         // Logic: AABB calculation (e.g., A.x < B.x + B.width && ...).
-        return false;
+        return (
+            boundsA.x < boundsB.x + boundsB.width &&
+            boundsA.x + boundsA.width > boundsB.x &&
+            boundsA.y < boundsB.y + boundsB.height &&
+            boundsA.height + boundsA.y > boundsB.y
+        );
     }
 
     /**

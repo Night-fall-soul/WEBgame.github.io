@@ -20,7 +20,7 @@ class Game {
         scoreManager,
         obstacleManager,
         collisionDetection,
-        domRender,
+        domRender
     ) {
         // Store all injected dependencies
         this.player = player;
@@ -39,14 +39,24 @@ class Game {
         // Calls reset() on ScoreManager and ObstacleManager.
         // Calls init() on DOMRender.
         this.scoreManager.reset();
-        this.domRender.initializeContainers();
+        this.obstacleManager.reset();
+
+        const dims = this.domRender.getCanvasDimensions();
+        if (dims) {
+            this.player.position = { x: dims.width / 2 - 15, y: dims.height - 100 };
+        }
+
+        this.player.bullets = [];
+        this.player.jett_dash = true;
     }
 
     /**
      * Starts the main game loop (e.g., using requestAnimationFrame).
      */
     start() {
-        // Sets isPaused = false and starts the loop.
+        this.isPaused = false;
+        this.lastFrameTime = Date.now();
+        this.gameLoop(this.lastFrameTime);
     }
 
     /**
@@ -54,11 +64,16 @@ class Game {
      * @param {number} currentTime - Time in milliseconds.
      */
     gameLoop(currentTime) {
+        if (this.isPaused) return;
+
         // 1. Calculate deltaTime
         const deltaTime = currentTime - this.lastFrameTime;
-        this.update(deltaTime);
+
         // 2. Call this.update(deltaTime);
+        this.update(deltaTime);
+
         // 3. Schedule next frame (requestAnimationFrame).
+        this.animationFrameId = requestAnimationFrame((time) => this.gameLoop(time));
     }
 
     /**
@@ -69,9 +84,15 @@ class Game {
         // 1. Update entities: this.player.update(deltaTime);
         this.player.update(deltaTime);
         this.domRender.renderTemplate(this.player);
+
         // 2. Update entities: this.obstacleManager.update(deltaTime);
+        this.domRender.renderTemplate(this.player);
+
         // 3. Handle collisions: this.handleCollisions();
+        this.handleCollisions();
+
         // 4. Check win/loss state: if (!this.player.isAlive()) { this.gameOver(); }
+        this.scoreManager.addScore(0.01 * deltaTime);
     }
 
     // --- State and Utility Functions ---
@@ -83,11 +104,12 @@ class Game {
         const obstacles = this.obstacleManager.getObstacles();
         const collision = this.collisionDetection.checkPlayerCollision(
             this.player.getBounds(),
-            obstacles,
+            obstacles
         );
 
         if (collision) {
             this.player.hit(); // Reaction logic delegated to Player
+            this.gameOver();
         }
     }
 
@@ -95,7 +117,10 @@ class Game {
      * Pauses the game loop.
      */
     pause() {
-        // Sets isPaused = true.
+        this.isPaused = true;
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+        }
     }
 
     /**
@@ -103,8 +128,16 @@ class Game {
      */
     gameOver() {
         // Calls this.pause();
+        this.pause();
+
         // Uses this.scoreManager.getScore() to get the final score.
+        const finalScore = Math.floor(this.scoreManager.getScore());
+
         // Uses this.domRender to show the Game Over screen.
+        const finalScoreEl = document.getElementById("final-score-value");
+        if (finalScoreEl) finalScoreEl.innerText = finalScore;
+
+        this.domRender.showContainer("gameOver");
     }
 }
 

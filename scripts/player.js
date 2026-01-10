@@ -12,12 +12,13 @@ class Player {
         this.score = 0;
         this.position = position;
 
-        this.jett_dash = this.gameDifficulty >= 3;
+        this.jett_dash = false;
         this.lastDashTime = 0;
+        this.lastShotTime = Date.now();
 
         this.bullets = [];
-        this.gameDifficulty = 1;
-        this.speed = 8 * this.gameDifficulty * 1.2;
+        this.level = 1;
+        this.speed = 8 * this.level * 1.2;
 
         this.input = inputManager;
     }
@@ -50,6 +51,8 @@ class Player {
             this.shoot();
         }
 
+        this.updateBullets(deltaTime);
+
         // 5. Cooldowns
         this.jett_dash = Date.now() - this.lastDashTime >= 10000;
     }
@@ -73,7 +76,7 @@ class Player {
     }
 
     dash(dash_distance, dir_x, dir_y) {
-        if (!this.canDash() || (dir_x === 0 && dir_y === 0)) return;
+        if (!this.canDash() || (dir_x === 0 && dir_y === 0)) return null;
         else {
             this.position.x += dir_x * dash_distance;
             this.position.y += dir_y * dash_distance;
@@ -109,9 +112,11 @@ class Player {
                     speed: 15,               // Vitesse de remontée
                     active: true
                 };*/
+        if (this.lastShotTime && Date.now - this.lastShotTime < 200) return null;
+        this.lastShotTime = Date.now();
 
         const bullet = {
-            id: `bullet-${Date.now()}-${Math.random()}`, // unique id
+            id: `bullet-${Date.now()}-${Math.random().toString(10)}`, // unique id
             type: "Bullet", // Domrender .bullet (css goes brr)
             position: {
                 x: this.position.x + 15,
@@ -158,23 +163,55 @@ class Player {
             }
         }
         */
+
+    updateBullets(deltaTime) {
+        const gameArea = document.getElementById("game-area");
+
+        for (let i = this.bullets.length - 1; i >= 0; i--) {
+            const bullet = this.bullets[i];
+
+            bullet.position.y -= bullet.speed * deltaTime;
+
+            let bulletEl = document.getElementById(bullet);
+            if (!bulletEl && gameArea) {
+                bulletEl = document.createElement("div");
+                bulletEl.id = bullet.id;
+                bulletEl.className = "bullet";
+                gameArea.appendChild(bulletEl);
+            }
+
+            if (bulletEl) {
+                bulletEl.style.left = `${bullet.position.x}px`;
+                bulletEl.style.top = `${bullet.position.y}px`;
+            }
+
+            if (bullet.position.y < -20) {
+                if (bulletEl) bulletEl.remove();
+                this.bullets.splice(i, 1);
+            }
+        }
+    }
+
     canDash() {
         return this.jett_dash;
     }
 
     hit() {
         //when the colissionmanager detects a collision
-        this.element.classList.add("hit-flash"); // Add a CSS animation
-        this.score = Math.max(0, this.score - 5);
-        setTimeout(() => this.element.classList.remove("hit-flash"), 200);
+        const el = document.getElementById(this.id);
+        if (el) {
+            el.classList.add("hit-flash"); // Add a CSS animation
+            this.score = Math.max(0, this.score - 5);
+            setTimeout(() => el.classList.remove("hit-flash"), 200);
+        }
     }
 
     getBounds() {
         return {
             x: this.position.x,
             y: this.position.y,
-            width: 50, // Match your CSS
-            height: 50
+            width: 30, // Match your CSS
+            height: 30
         };
     }
 
@@ -207,7 +244,8 @@ class Player {
 
     getLevel(level) {
         this.level = level;
-        this.speed = 8 * gameLevel * 1.2;
+        this.speed = 8 * level * 1.2;
+        this.jett_dash = level >= 3;
     }
 }
 

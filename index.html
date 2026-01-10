@@ -1,81 +1,81 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <script type="module" src="scripts/main.js"></script>
     <link rel="stylesheet" href="styles/style.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!--
-      <!-- ON N'UTILISE <h1> QUE POUR LE TITRE DU JEU (juste choses de qualité du code (plus concretement pour trucs de SEO)) -->
-    <!-- for further information: 
-        >>> https://developers.google.com/search/docs/essentials/spam-policies?hl=en 
-        > "SEO" = Search Engine Optimization -->
+</head>
+<body>
+<div id="app"></div>
+<!--
+   ON N'UTILISE <h1> QUE POUR LE TITRE DU JEU (juste choses de qualité du code (plus concretement pour trucs de SEO)) -->
+<!-- for further information:
+    >>> https://developers.google.com/search/docs/essentials/spam-policies?hl=en
+    > "SEO" = Search Engine Optimization -->
 
-    <!--
-      <div class="global-container" id="game-container">
-        <canvas id="game"></canvas>
+<!--
+  <div class="global-container" id="game-container">
+    <canvas id="game"></canvas>
+  </div>
+
+  <div class="global-container" id="game-over-container">
+    <h2>You Lost!</h2>
+    <div id="final-score">
+      <h3>Your score:</h3>
+      <span id=""></span>
+    </div>
+    <button id="">Revenir en Menu</button>
+    <button id="">Rejouer</button>
+  </div>
+  <div class="global-container" id="main-menu-container">
+    <div>
+      <label for="name">Nom du joueur:</label>
+      <input type="text" id="name-field" name="name" />
+    </div>
+
+    <div>
+      <select name="name" id="difficulty">
+        <option value="Facile">Facile</option>
+        <option value="Moyen">Moyen</option>
+        <option value="Difficile">Difficile</option>
+      </select>
+    </div>
+
+    <div>
+      <h3 style="margin: 14px 0 6px; font-size: 16px">
+        Classement (session)
+      </h3>
+      // I wouldn't do a table here, just div summons by DOM... As you want.
+      // DOM = Document Object Model (pour Amine)
+      <table aria-label="Classement de session">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Pseudo</th>
+            <th>Score</th>
+            <th>Diff.</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="board-body"></tbody>
+      </table>
+    </div>
+
+    <button id="" class="">JOUER</button>
+    // This is NOT a global container, just it's the pause menu.
+    // Therefore is a popup, therefore has different style than global-container.
+    <div class="pause" id="pause-menu-container">
+      <h2>Partie en jeu</h2>
+      <div id="current-score">
+        <h3>Current score:</h3>
+        <p id=""></p>
       </div>
-
-      <div class="global-container" id="game-over-container">
-        <h2>You Lost!</h2>
-        <div id="final-score">
-          <h3>Your score:</h3>
-          <span id=""></span>
-        </div>
-        <button id="">Revenir en Menu</button>
-        <button id="">Rejouer</button>
-      </div>
-      <div class="global-container" id="main-menu-container">
-        <div>
-          <label for="name">Nom du joueur:</label>
-          <input type="text" id="name-field" name="name" />
-        </div>
-
-        <div>
-          <select name="name" id="difficulty">
-            <option value="Facile">Facile</option>
-            <option value="Moyen">Moyen</option>
-            <option value="Difficile">Difficile</option>
-          </select>
-        </div>
-
-        <div>
-          <h3 style="margin: 14px 0 6px; font-size: 16px">
-            Classement (session)
-          </h3>
-          // I wouldn't do a table here, just div summons by DOM... As you want.
-          // DOM = Document Object Model (pour Amine) 
-          <table aria-label="Classement de session">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Pseudo</th>
-                <th>Score</th>
-                <th>Diff.</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody id="board-body"></tbody>
-          </table>
-        </div>
-
-        <button id="" class="">JOUER</button>
-        // This is NOT a global container, just it's the pause menu.
-        // Therefore is a popup, therefore has different style than global-container. 
-        <div class="pause" id="pause-menu-container">
-          <h2>Partie en jeu</h2>
-          <div id="current-score">
-            <h3>Current score:</h3>
-            <p id=""></p>
-          </div>
-          <button id="">Continuer avec la partie</button>
-          <button id="">Revenir en Menu</button>
-          <button id="">Rejouer</button>
-        </div>
-      </div>-->
-  </body>
+      <button id="">Continuer avec la partie</button>
+      <button id="">Revenir en Menu</button>
+      <button id="">Rejouer</button>
+    </div>
+  </div>-->
+</body>
 </html>
