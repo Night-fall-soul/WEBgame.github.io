@@ -1,23 +1,25 @@
 class Player {
     position = {
         x: 0,
-        y: 0,
+        y: 0
     };
 
-    constructor(name, position) {
+    constructor(name, position, inputManager) {
         this.type = "Player";
         this.id = `player-${name}`;
 
         this.name = name;
         this.score = 0;
-        this.speed = 8 * gameLevel * 1.2;
         this.position = position;
 
-        this.jett_dash = gameLevel >= 3;
+        this.jett_dash = this.gameDifficulty >= 3;
         this.lastDashTime = 0;
 
         this.bullets = [];
-        this.gameDifficulty;
+        this.gameDifficulty = 1;
+        this.speed = 8 * this.gameDifficulty * 1.2;
+
+        this.input = inputManager;
     }
 
     update(deltaTime) {
@@ -55,7 +57,7 @@ class Player {
     move(
         direction_x,
         direction_y,
-        time /* its DELTA TIME the time btween frame and frame (but its okay just a naming convention) */,
+        time /* its DELTA TIME the time btween frame and frame (but its okay just a naming convention) */
     ) {
         // calculates the new direction of movement
 
@@ -113,14 +115,15 @@ class Player {
             type: "Bullet", // Domrender .bullet (css goes brr)
             position: {
                 x: this.position.x + 15,
-                y: this.position.y - 10,
+                y: this.position.y - 10
             },
             speed: 15,
-            active: true,
+            active: true
         };
 
         this.bullets.push(bullet);
     }
+
     /*
         updateBullets(obstacles) {
             for (let i = this.bullets.length - 1; i >= 0; i--) {
@@ -165,38 +168,41 @@ class Player {
         this.score = Math.max(0, this.score - 5);
         setTimeout(() => this.element.classList.remove("hit-flash"), 200);
     }
+
     getBounds() {
         return {
             x: this.position.x,
             y: this.position.y,
             width: 50, // Match your CSS
-            height: 50,
+            height: 50
         };
     }
+
     //au cas ou y'en a pas render elsewhere c ici:
     render() {
         this.element.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
     }
 
     determine_directions() {
-        if (keyboard) dy = -1;
-        if (keys["ArrowDown"] || keys["KeyS"]) dy = 1;
-        if (keys["ArrowLeft"] || keys["KeyA"]) dx = -1;
-        if (keys["ArrowRight"] || keys["KeyD"]) dx = 1;
-        // we gotta return an object
+        let dx = 0;
+        let dy = 0;
+
+        // El jugador ya no sabe qué tecla se pulsa, solo pregunta por la ACCIÓN
+        if (this.input.isActionActive("moveUp")) dy = -1;
+        if (this.input.isActionActive("moveDown")) dy = 1;
+        if (this.input.isActionActive("moveLeft")) dx = -1;
+        if (this.input.isActionActive("moveRight")) dx = 1;
+
         return { dx, dy };
     }
+
     determine_if_player_dash() {
-        if (keys["ShiftLeft"] || keys["ShiftRight"]) {
-            return true;
-        }
-        return false;
+        // Abstracción total: no nos importa si es Shift, un botón del mando o un icono táctil
+        return this.input.isActionActive("dash");
     }
+
     determine_if_player_shoot() {
-        if (keys["Space"]) {
-            return true;
-        }
-        return false;
+        return this.input.isActionActive("shoot");
     }
 
     getLevel(level) {
