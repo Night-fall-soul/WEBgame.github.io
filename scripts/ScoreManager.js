@@ -1,7 +1,7 @@
 class ScoreManager {
     //iker i did the coockies but its the frst time i handle this shit so look through it and tell me what goes well and what goes shit ty 
     // amine can you write your comments in english .... 
-    
+
     #currentScore = 0;
 
     constructor(domRenderer) {
@@ -19,7 +19,7 @@ class ScoreManager {
             this._setCookie("highScore", this.highScore, 30); // Garde le record 30 jours
         }
 
-        updateDisplay();
+        this.updateDisplay();
     }
 
     getScore() {
@@ -49,7 +49,7 @@ class ScoreManager {
 
     _getCookie(name) {
         const nameEQ = name + "=";
-        const ca = document.cookie.split(';');
+        const ca = document.cookie.split(";");
         for (let i = 0; i < ca.length; i++) {
             let c = ca[i].trim();
             if (c.indexOf(nameEQ) === 0) return parseInt(c.substring(nameEQ.length, c.length));

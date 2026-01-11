@@ -55,7 +55,7 @@ class Game {
      */
     start() {
         this.isPaused = false;
-        this.lastFrameTime = Date.now();
+        this.lastFrameTime = performance.now();
         this.gameLoop(this.lastFrameTime);
     }
 
@@ -68,6 +68,9 @@ class Game {
 
         // 1. Calculate deltaTime
         const deltaTime = currentTime - this.lastFrameTime;
+
+        // im. gonna. do. some. bad. things.
+        this.lastFrameTime = currentTime;
 
         // 2. Call this.update(deltaTime);
         this.update(deltaTime);
@@ -86,7 +89,7 @@ class Game {
         this.domRender.renderTemplate(this.player);
 
         // 2. Update entities: this.obstacleManager.update(deltaTime);
-        this.domRender.renderTemplate(this.player);
+        this.obstacleManager.update(deltaTime);
 
         // 3. Handle collisions: this.handleCollisions();
         this.handleCollisions();

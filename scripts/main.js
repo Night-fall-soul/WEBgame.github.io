@@ -71,4 +71,5 @@ document.addEventListener("DOMContentLoaded", () => {
 function startGame() {
     render.showContainer("game");
     game.init();
+    game.start();
 }

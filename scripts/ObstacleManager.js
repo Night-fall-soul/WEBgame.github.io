@@ -10,10 +10,22 @@ class ObstacleManager {
         this.nextObstacleId = 1;
         this.spawnRate = 1000;
         this.level = 0;
+
+        this.minSpawnTime = 1000;
+        this.maxSpawnTime = 2000;
+        this.setNextSpawnTime();
+        this.nextSpawnTime = 0;
+
+        this.fallSpeed = 0.08;
+        this.lateralSpeed = 0.1;
+        this.driftState = -1;
+    }
+
+    setNextSpawnTime() {
+        this.nextSpawnTime = Math.floor((Math.random() * (this.maxSpawnTime - this.minSpawnTime + 1) + this.minSpawnTime));
     }
 
     update(deltaTime) {
-        // move this.obstacles and call domRender.updateElementPosition ...
 
         // gonna thank markov's chains for this
         // we gotta get the level and change difficulty thanks to the spawn rate
@@ -24,31 +36,14 @@ class ObstacleManager {
         // first we spawn our objects
         this.spawnTimer += deltaTime;
 
-        if (this.spawnTimer > this.spawnRate) {
+        if (this.spawnTimer > this.nextSpawnTime) {
             this.spawnObstacle();
             this.spawnTimer = 0;
+            this.setNextSpawnTime();
 
-            let minTime, maxTime;
-
-            switch (difficulty) {
-                case 3:
-                    minTime = 300;
-                    maxTime = 700;
-                    break;
-                case 2:
-                    minTime = 600;
-                    maxTime = 1200;
-                    break;
-                case 1:
-                    break;
-                default:
-                    minTime = 1000;
-                    maxTime = 2000;
-                    break;
-            }
-
-            this.spawnRate = Math.random() * (maxTime - minTime) + minTime;
+            console.log("spawning obstacle, next in " + this.nextSpawnTime + "ms");
         }
+
 
         const gameHeight = this.domRender.getCanvasDimensions().height;
         const gameWidth = this.domRender.getCanvasDimensions().width;
@@ -56,36 +51,46 @@ class ObstacleManager {
         for (let i = this.obstacles.length - 1; i >= 0; i--) {
             const obs = this.obstacles[i];
 
-            if (obs.vx === undefined) {
-                obs.vx = (Math.random() < 0.5 ? -1 : 1) * 0.1;
+            // i really need to start over. may god be with me
+            // first time failed
+            // second time failed
+            // need to study optimization :(
+            // third time failed
+
+            this.applyMarkovChain(obs);
+
+            obs.y += (this.fallSpeed * deltaTime * (1 + this.level * 0.05));
+            obs.x += (obs.driftState * this.lateralSpeed * deltaTime);
+
+            if (obs.x <= 0) {
+                obs.x = 0;
+                obs.driftState = 1;
+            } else if (obs.x + obs.width >= gameWidth) {
+                obs.x = gameWidth - obs.width;
+                obs.driftState = -1;
             }
 
-            // MARKOV'S CHAIN LETS GOOOOOOOOOO
-            const changeDirectionChance = this.level * 0.01;
-            if (Math.random() < changeDirectionChance) {
-                obs.vx *= -1;
-            }
-
-            // update movement
-            obs.y += 0.2 * deltaTime;
-            obs.x += obs.vx * deltaTime;
-
-            // iSaborit's note:
-            // at this moment, i don't know if what i'm coding it makes sense or not....
-
-            // bota bota la pelota
-            if (obs.x <= 0 || obs.x >= gameWidth) {
-                obs.vx *= -1;
-                // Corregir posición para que no se quede pegado fuera
-                obs.x = Math.max(0, Math.min(obs.x, gameWidth));
-            }
-
-            // once it has touched the floor, we gotta delete our object
             if (obs.y > gameHeight) {
                 this.domRender.removeElement(obs.id);
                 this.obstacles.splice(i, 1);
             } else {
                 this.domRender.updateElementPosition(obs.id, obs.x, obs.y);
+            }
+        }
+    }
+
+    applyMarkovChain(obstacle) {
+        const changeProb = 0.01 + this.level * 0.005;
+
+        if (Math.random() < changeProb) {
+            console.log("changing!");
+            const rand = Math.random();
+            if (rand < 0.33) {
+                obstacle.driftState = -1;
+            } else if (rand < 0.66) {
+                obstacle.driftState = 0;
+            } else {
+                obstacle.driftState = 1;
             }
         }
     }
@@ -103,12 +108,11 @@ class ObstacleManager {
         const obstacle = {
             id: id,
             type: "Obstacle", // css formatting goes brr
-            position: {
-                x: Math.random() * (width - 20),
-                y: -20,
-            },
+            x: Math.random() * (width - 20),
+            y: -20,
             width: 20,
             height: 20,
+            driftState: (Math.random() < 0.33 ? -1 : (Math.random() < 0.5 ? 0 : 1))
         };
 
         this.obstacles.push(obstacle);
@@ -122,7 +126,7 @@ class ObstacleManager {
 
     reset() {
         this.obstacles.forEach((obstacle) =>
-            this.domRender.removeElement(obstacle.id),
+            this.domRender.removeElement(obstacle.id)
         );
         this.obstacles = [];
         this.nextObstacleId = 1;
@@ -142,6 +146,20 @@ class ObstacleManager {
 
     getLevel(level) {
         this.level = level;
+
+        switch (this.level) {
+            case 3:
+                this.minSpawnTime = 300;
+                this.maxSpawnTime = 700;
+                break;
+            case 2:
+                this.minSpawnTime = 600;
+                this.maxSpawnTime = 1200;
+                break;
+            default:
+                this.minSpawnTime = 1000;
+                this.maxSpawnTime = 2000;
+        }
     }
 }
 

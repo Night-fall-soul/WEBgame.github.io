@@ -2,7 +2,7 @@ import {
     createGameOverContainer,
     createMainMenuContainer,
     createGameContainer,
-    createQuickMenuContainer,
+    createQuickMenuContainer
 } from "./Templates.js";
 
 class DOMRender {
@@ -13,7 +13,7 @@ class DOMRender {
             game: null,
             gameOver: null,
             quickMenu: null,
-            mainMenu: null,
+            mainMenu: null
         };
 
         this.initializeContainers();
@@ -24,23 +24,23 @@ class DOMRender {
             {
                 id: "main-menu-container",
                 key: "mainMenu",
-                content: createMainMenuContainer(),
+                content: createMainMenuContainer()
             },
             {
                 id: "game-container",
                 key: "game",
-                content: createGameContainer(),
+                content: createGameContainer()
             },
             {
                 id: "game-over-container",
                 key: "gameOver",
-                content: createGameOverContainer(),
+                content: createGameOverContainer()
             },
             {
                 id: "quick-menu-container",
                 key: "quickMenu",
-                content: createQuickMenuContainer(),
-            },
+                content: createQuickMenuContainer()
+            }
         ];
 
         containerDefinitions.forEach((definition) => {
@@ -103,6 +103,9 @@ class DOMRender {
             gameArea.appendChild(el);
         }
 
+        const x = entity.x !== undefined ? entity.x : (entity.position ? entity.position.x : 0);
+        const y = entity.y !== undefined ? entity.y : (entity.position ? entity.position.y : 0);
+
         this.updateElementPosition(el, entity.x, entity.y);
         return el;
     }
@@ -135,7 +138,7 @@ class DOMRender {
         if (gameArea) {
             return {
                 width: gameArea.clientWidth,
-                height: gameArea.clientHeight,
+                height: gameArea.clientHeight
             };
         }
     }
