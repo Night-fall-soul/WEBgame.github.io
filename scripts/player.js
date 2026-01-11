@@ -1,24 +1,29 @@
 class Player {
     position = {
         x: 0,
-        y: 0
+        y: 0,
     };
 
-    constructor(name, position, inputManager) {
+    constructor(name, position, size, inputManager) {
         this.type = "Player";
         this.id = `player-${name}`;
 
         this.name = name;
         this.score = 0;
         this.position = position;
+        this.playerSize = size;
 
         this.jett_dash = false;
         this.lastDashTime = 0;
         this.lastShotTime = Date.now();
 
+        this.isDashing = false;
+        this.dashStartTime = 0;
+        this.dashDirection = { x: 0, y: 0 };
+
         this.bullets = [];
         this.level = 1;
-        this.speed = 8 * this.level * 1.2;
+        this.speed = 0.1 + this.level * 0.1;
 
         this.input = inputManager;
     }
@@ -36,14 +41,36 @@ class Player {
         // everything understood now. Love you amine my brudah
 
         // 1. Input
-        const { dx, dy } = this.determine_directions();
+        
+        if (this.isDashing) {
+            if (Date.now() - this.dashStartTime > 100) {
+                this.isDashing = false;
+            }
+        }
+
+        const inputDir = this.determine_directions();
+
+        let X = 0;
+        let Y = 0;
+
+        if (this.isDashing) {
+            // SI ESTAMOS EN DASH: Ignoramos el teclado y usamos la dirección guardada
+            X = this.dashDirection.x;
+            Y = this.dashDirection.y;
+        } else {
+            // MOVIMIENTO NORMAL: Usamos el teclado
+            X = inputDir.dx;
+            Y = inputDir.dy;
+        }
 
         // 2. Movement
-        this.move(dx, dy, deltaTime);
+        this.move(X, Y, deltaTime);
 
         // 3. Dash
         if (this.determine_if_player_dash() && this.canDash()) {
-            this.dash(50, dx, dy);
+            if (inputDir.dx !== 0 || inputDir.dy !== 0) {
+                this.dash(inputDir.dx, inputDir.dy);
+            }
         }
 
         // 4. Shoot
@@ -54,36 +81,48 @@ class Player {
         this.updateBullets(deltaTime);
 
         // 5. Cooldowns
-        this.jett_dash = Date.now() - this.lastDashTime >= 10000;
+        this.jett_dash = Date.now() - this.lastDashTime >= 2000;
     }
 
     move(
         direction_x,
         direction_y,
-        time /* its DELTA TIME the time btween frame and frame (but its okay just a naming convention) */
+        time /* its DELTA TIME the time btween frame and frame (but its okay just a naming convention) */,
     ) {
         // calculates the new direction of movement
+        
+        let currentSpeed = this.speed;
+        if (this.isDashing) {
+            currentSpeed *= 4.5 - (this.level * 0.5);
+        }
+        
+        const gameArea = document.getElementById("game-area");
+        let nextX = this.position.x + (direction_x * time * currentSpeed * 0.1);
+        let nextY = this.position.y + (direction_y * time * currentSpeed * 0.1);
 
-        this.position.x +=
-            direction_x *
-            time *
-            this.speed *
-            0.1; /* adding 0.1 if not the player will go brrr */
-        this.position.y += direction_y * time * this.speed * 0.1;
+        const playerSize = this.playerSize; 
+        const maxX = gameArea.clientWidth - playerSize;
+        const maxY = gameArea.clientHeight - playerSize;
+        
+        this.position.x = Math.max(0, Math.min(nextX, maxX));
+        
+        this.position.y = Math.max(0, Math.min(nextY, maxY));
+
+        
+
 
         // PLAYER DOES NOT DRAW HIM TO HIMSELFFFF
         // this.render()
     }
 
-    dash(dash_distance, dir_x, dir_y) {
-        if (!this.canDash() || (dir_x === 0 && dir_y === 0)) return null;
-        else {
-            this.position.x += dir_x * dash_distance;
-            this.position.y += dir_y * dash_distance;
+    dash(dir_x, dir_y) {
+        this.isDashing = true;
+        this.dashStartTime = Date.now();
 
-            this.jett_dash = false;
-            this.lastDashTime = Date.now(); // Record when we dashed
-        }
+        this.dashDirection = { x: dir_x, y: dir_y };
+
+        this.jett_dash = false;
+        this.lastDashTime = Date.now();
     }
 
     shoot() {
@@ -112,7 +151,8 @@ class Player {
                     speed: 15,               // Vitesse de remontée
                     active: true
                 };*/
-        if (this.lastShotTime && Date.now - this.lastShotTime < 200) return null;
+        if (this.lastShotTime && Date.now() - this.lastShotTime < 300)
+            return null;
         this.lastShotTime = Date.now();
 
         const bullet = {
@@ -120,10 +160,10 @@ class Player {
             type: "Bullet", // Domrender .bullet (css goes brr)
             position: {
                 x: this.position.x + 15,
-                y: this.position.y - 10
+                y: this.position.y - 10,
             },
-            speed: 15,
-            active: true
+            speed: 1,
+            active: true,
         };
 
         this.bullets.push(bullet);
@@ -172,11 +212,13 @@ class Player {
 
             bullet.position.y -= bullet.speed * deltaTime;
 
-            let bulletEl = document.getElementById(bullet);
+            let bulletEl = document.getElementById(bullet.id);
+
             if (!bulletEl && gameArea) {
                 bulletEl = document.createElement("div");
                 bulletEl.id = bullet.id;
-                bulletEl.className = "bullet";
+                bulletEl.className = "entity bullet";
+
                 gameArea.appendChild(bulletEl);
             }
 
@@ -211,7 +253,7 @@ class Player {
             x: this.position.x,
             y: this.position.y,
             width: 30, // Match your CSS
-            height: 30
+            height: 30,
         };
     }
 
@@ -224,17 +266,15 @@ class Player {
         let dx = 0;
         let dy = 0;
 
-        // El jugador ya no sabe qué tecla se pulsa, solo pregunta por la ACCIÓN
-        if (this.input.isActionActive("moveUp")) dy = -1;
-        if (this.input.isActionActive("moveDown")) dy = 1;
-        if (this.input.isActionActive("moveLeft")) dx = -1;
-        if (this.input.isActionActive("moveRight")) dx = 1;
+        if (this.input.isActionActive("moveUp")) dy += -1;
+        if (this.input.isActionActive("moveDown")) dy += 1;
+        if (this.input.isActionActive("moveLeft")) dx += -1;
+        if (this.input.isActionActive("moveRight")) dx += 1;
 
         return { dx, dy };
     }
 
     determine_if_player_dash() {
-        // Abstracción total: no nos importa si es Shift, un botón del mando o un icono táctil
         return this.input.isActionActive("dash");
     }
 
@@ -244,7 +284,7 @@ class Player {
 
     getLevel(level) {
         this.level = level;
-        this.speed = 8 * level * 1.2;
+        this.speed = 2 + level * 1.1;
         this.jett_dash = level >= 3;
     }
 }

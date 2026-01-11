@@ -59,7 +59,7 @@ class ObstacleManager {
 
             this.applyMarkovChain(obs);
 
-            obs.y += (this.fallSpeed * deltaTime * (1 + this.level * 0.05));
+            obs.y += (this.fallSpeed * deltaTime * (1 + this.level * 0.1));
             obs.x += (obs.driftState * this.lateralSpeed * deltaTime);
 
             if (obs.x <= 0) {
@@ -149,8 +149,8 @@ class ObstacleManager {
 
         switch (this.level) {
             case 3:
-                this.minSpawnTime = 300;
-                this.maxSpawnTime = 700;
+                this.minSpawnTime = 200;
+                this.maxSpawnTime = 400;
                 break;
             case 2:
                 this.minSpawnTime = 600;
@@ -160,6 +160,7 @@ class ObstacleManager {
                 this.minSpawnTime = 1000;
                 this.maxSpawnTime = 2000;
         }
+
     }
 }
 

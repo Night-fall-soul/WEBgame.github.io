@@ -106,7 +106,7 @@ class DOMRender {
         const x = entity.x !== undefined ? entity.x : (entity.position ? entity.position.x : 0);
         const y = entity.y !== undefined ? entity.y : (entity.position ? entity.position.y : 0);
 
-        this.updateElementPosition(el, entity.x, entity.y);
+        this.updateElementPosition(el, x, y);
         return el;
     }
 
@@ -124,7 +124,7 @@ class DOMRender {
 
     drawScore(score) {
         const scoreEl = document.getElementById("score-value");
-        if (scoreEl) scoreEl.innerText = score;
+        if (scoreEl) scoreEl.innerText = Math.round(score);
     }
 
     removeElement(elementId) {

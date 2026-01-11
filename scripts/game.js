@@ -103,16 +103,53 @@ class Game {
     /**
      * Handles collision checks and delegates the reaction logic.
      */
+    /**
+     * Handles collision checks and delegates the reaction logic.
+     */
     handleCollisions() {
         const obstacles = this.obstacleManager.getObstacles();
-        const collision = this.collisionDetection.checkPlayerCollision(
+        
+        const playerCollision = this.collisionDetection.checkPlayerCollision(
             this.player.getBounds(),
             obstacles
         );
 
-        if (collision) {
-            this.player.hit(); // Reaction logic delegated to Player
+        if (playerCollision) {
+            this.player.hit(); 
             this.gameOver();
+        }
+
+        
+        // honestly, not the best place to do it, but im tired.
+        const bullets = this.player.bullets;
+
+        for (let i = bullets.length - 1; i >= 0; i--) {
+            const bullet = bullets[i];
+
+            const bulletBounds = {
+                x: bullet.position.x,
+                y: bullet.position.y,
+                width: 8,
+                height: 8
+            };
+
+            for (let j = obstacles.length - 1; j >= 0; j--) {
+                const obstacle = obstacles[j];
+
+                if (this.collisionDetection.checkOverlap(bulletBounds, obstacle)) {
+                    
+
+                    this.domRender.removeElement(obstacle.id);
+                    this.domRender.removeElement(bullet.id);
+
+                    obstacles.splice(j, 1);
+                    bullets.splice(i, 1);
+
+                    this.scoreManager.addScore(50);
+
+                    break;
+                }
+            }
         }
     }
 

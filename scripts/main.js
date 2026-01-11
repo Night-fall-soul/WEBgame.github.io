@@ -19,7 +19,7 @@ const scoreManager = new ScoreManager(render);
 const obstacleManager = new ObstacleManager(render, null);
 
 const initialPlayerPos = { x: 300, y: 300 };
-const player = new Player("Sparky", initialPlayerPos, inputManager);
+const player = new Player("Sparky", initialPlayerPos, 30, inputManager);
 
 const game = new Game(
     player,

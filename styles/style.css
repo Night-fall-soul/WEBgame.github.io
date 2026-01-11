@@ -131,6 +131,6 @@ th, td {
 .bullet {
     width: 8px;
     height: 8px;
-    background-color: #ffeaa7;
-    border-radius: 50%;
+    background-color: #eeeee0; 
+    box-shadow: 0 0 10px #90d2ff;
 }
