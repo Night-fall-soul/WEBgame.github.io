@@ -287,7 +287,7 @@ class Player {
 
     getLevel(level) {
         this.level = level;
-        if (level == 4) level = 3;
+        if (level == 4) level = 2;
         this.speed = 2 + level * 1.08;
         this.jett_dash = level >= 3;
     }

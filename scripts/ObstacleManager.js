@@ -160,8 +160,9 @@ class ObstacleManager {
 
         switch (this.level) {
             case 4:
-                this.minSpawnTime = 100;
+                this.minSpawnTime = 0;
                 this.maxSpawnTime = 200;
+                break;
             case 3:
                 this.minSpawnTime = 200;
                 this.maxSpawnTime = 400;
