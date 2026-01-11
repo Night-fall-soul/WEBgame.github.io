@@ -92,7 +92,7 @@ class Game {
         this.obstacleManager.update(deltaTime);
 
         // 3. Handle collisions: this.handleCollisions();
-        this.handleCollisions();
+        this.handleCollisions(deltaTime);
 
         // 4. Check win/loss state: if (!this.player.isAlive()) { this.gameOver(); }
         this.scoreManager.addScore(0.01 * deltaTime);
@@ -106,7 +106,7 @@ class Game {
     /**
      * Handles collision checks and delegates the reaction logic.
      */
-    handleCollisions() {
+    handleCollisions(deltaTime) {
         const obstacles = this.obstacleManager.getObstacles();
         
         const playerCollision = this.collisionDetection.checkPlayerCollision(
@@ -126,11 +126,13 @@ class Game {
         for (let i = bullets.length - 1; i >= 0; i--) {
             const bullet = bullets[i];
 
+            const distanceTraveled = (bullet.speed * deltaTime);
+
             const bulletBounds = {
                 x: bullet.position.x,
                 y: bullet.position.y,
                 width: 8,
-                height: 8
+                height: 8 + distanceTraveled
             };
 
             for (let j = obstacles.length - 1; j >= 0; j--) {

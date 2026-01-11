@@ -11,9 +11,10 @@ export function createMainMenuContainer() {
             <div class="input-group">
                 <label for="difficulty">How difficult may your game be:</label>
                 <select name="difficulty" id="difficulty">
-                    <option value="Facile">ez</option>
-                    <option value="Moyen">normal</option>
-                    <option value="Difficile">67 difficulty</option>
+                    <option value="easy">Easy. Get used to the game!</option>
+                    <option value="mid">Meh, pretty mid...</option>
+                    <option value="hard">Scary scary...</option>
+                    <option value="dont">don't. :)</option>
                 </select>
             </div>
 

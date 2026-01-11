@@ -43,8 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const difficultyVal = difficultySelect ? difficultySelect.value : "Facile";
 
             let level = 1;
-            if (difficultyVal === "Moyen") level = 2;
-            if (difficultyVal === "Difficile") level = 3;
+            if (difficultyVal === "mid") level = 2;
+            if (difficultyVal === "hard") level = 3;
+            if (difficultyVal === "dont") level = 4;
 
             if (typeof player.getLevel === "function") player.getLevel(level);
             if (typeof obstacleManager.getLevel === "function") obstacleManager.getLevel(level);

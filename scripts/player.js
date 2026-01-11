@@ -159,11 +159,14 @@ class Player {
             id: `bullet-${Date.now()}-${Math.random().toString(10)}`, // unique id
             type: "Bullet", // Domrender .bullet (css goes brr)
             position: {
-                x: this.position.x + 15,
+                x: this.position.x + 11,
                 y: this.position.y - 10,
             },
             speed: 1,
             active: true,
+
+            width: 8,
+            height: 8,
         };
 
         this.bullets.push(bullet);
@@ -284,7 +287,8 @@ class Player {
 
     getLevel(level) {
         this.level = level;
-        this.speed = 2 + level * 1.1;
+        if (level == 4) level = 3;
+        this.speed = 2 + level * 1.08;
         this.jett_dash = level >= 3;
     }
 }

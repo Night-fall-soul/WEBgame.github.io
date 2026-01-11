@@ -22,11 +22,13 @@ class ObstacleManager {
     }
 
     setNextSpawnTime() {
-        this.nextSpawnTime = Math.floor((Math.random() * (this.maxSpawnTime - this.minSpawnTime + 1) + this.minSpawnTime));
+        this.nextSpawnTime = Math.floor(
+            Math.random() * (this.maxSpawnTime - this.minSpawnTime + 1) +
+            this.minSpawnTime,
+        );
     }
 
     update(deltaTime) {
-
         // gonna thank markov's chains for this
         // we gotta get the level and change difficulty thanks to the spawn rate
         // also make the object move faster and be more prone to change horizontal
@@ -41,9 +43,10 @@ class ObstacleManager {
             this.spawnTimer = 0;
             this.setNextSpawnTime();
 
-            console.log("spawning obstacle, next in " + this.nextSpawnTime + "ms");
+            console.log(
+                "spawning obstacle, next in " + this.nextSpawnTime + "ms",
+            );
         }
-
 
         const gameHeight = this.domRender.getCanvasDimensions().height;
         const gameWidth = this.domRender.getCanvasDimensions().width;
@@ -57,10 +60,18 @@ class ObstacleManager {
             // need to study optimization :(
             // third time failed
 
+            // FINLALYY
+
             this.applyMarkovChain(obs);
 
-            obs.y += (this.fallSpeed * deltaTime * (1 + this.level * 0.1));
-            obs.x += (obs.driftState * this.lateralSpeed * deltaTime);
+            obs.y += this.fallSpeed * deltaTime * (1 + this.level * 0.14);
+            if (this.level == 4) {
+                obs.x +=
+                    obs.driftState * this.lateralSpeed * deltaTime +
+                    2 * obs.driftState;
+            } else {
+                obs.x += obs.driftState * this.lateralSpeed * deltaTime;
+            }
 
             if (obs.x <= 0) {
                 obs.x = 0;
@@ -110,9 +121,9 @@ class ObstacleManager {
             type: "Obstacle", // css formatting goes brr
             x: Math.random() * (width - 20),
             y: -20,
-            width: 20,
+            width: 24,
             height: 20,
-            driftState: (Math.random() < 0.33 ? -1 : (Math.random() < 0.5 ? 0 : 1))
+            driftState: Math.random() < 0.33 ? -1 : Math.random() < 0.5 ? 0 : 1,
         };
 
         this.obstacles.push(obstacle);
@@ -126,7 +137,7 @@ class ObstacleManager {
 
     reset() {
         this.obstacles.forEach((obstacle) =>
-            this.domRender.removeElement(obstacle.id)
+            this.domRender.removeElement(obstacle.id),
         );
         this.obstacles = [];
         this.nextObstacleId = 1;
@@ -148,6 +159,9 @@ class ObstacleManager {
         this.level = level;
 
         switch (this.level) {
+            case 4:
+                this.minSpawnTime = 100;
+                this.maxSpawnTime = 200;
             case 3:
                 this.minSpawnTime = 200;
                 this.maxSpawnTime = 400;
@@ -160,7 +174,6 @@ class ObstacleManager {
                 this.minSpawnTime = 1000;
                 this.maxSpawnTime = 2000;
         }
-
     }
 }
 
