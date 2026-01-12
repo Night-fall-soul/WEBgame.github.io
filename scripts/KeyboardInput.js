@@ -10,11 +10,11 @@ export default class KeyboardInput {
         return !!this.keys[key];
     }*/
 
-    /* I really thing this is bullshit seeing how amine has coded player,
-      but i gotta say I REALLY LIKE what amine did because it's simpler
-      and i HATE event listeners (c gang) so better if i ignore this part
-      (ill comment everything bc im kinda afraid that amine thing won't
-      work but hope is the thing that lasts longer) */
+    /* 
+      .
+      .
+      .
+      . */
 
     /* Re-edit 2 hours later: i realized we weren't doing DI on the
       input, so i changed a bit the workflow on this dependency. Now

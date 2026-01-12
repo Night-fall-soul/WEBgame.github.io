@@ -156,7 +156,7 @@ class Game {
         }
 
 
-        // honestly, not the best place to do it, but im tired.
+        // Could find a better place, but its there for now.
         const bullets = this.player.bullets;
 
         for (let i = bullets.length - 1; i >= 0; i--) {
@@ -203,8 +203,8 @@ class Game {
             pauseScoreElement.innerText = Math.floor(this.scoreManager.getScore());
         }
 
-        // omg i was killing the loop i lasted 4 hours to figure this out...
-        // (i solved it while i was walking around lol)
+        // 
+        // 
         if (this.animationFrameId) {
             // cancelAnimationFrame(this.animationFrameId);
         }

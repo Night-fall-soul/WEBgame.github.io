@@ -38,7 +38,7 @@ class Player {
                 this.jett_dash = (Date.getTime() - last_time_dashed) >= 10 * 1000 ? true : false;
                 */
         // Okay, this updates nothing, so i'll comment it. Amine and I have talked abt this
-        // everything understood now. Love you amine my brudah
+        // everything understood now.
 
         // 1. Input
 
@@ -87,7 +87,7 @@ class Player {
     move(
         direction_x,
         direction_y,
-        time /* its DELTA TIME the time btween frame and frame (but its okay just a naming convention) */
+        time /* its DELTA TIME the time between frame and frame (but its okay just a naming convention) */
     ) {
         // calculates the new direction of movement
 
@@ -109,7 +109,7 @@ class Player {
         this.position.y = Math.max(0, Math.min(nextY, maxY));
 
 
-        // PLAYER DOES NOT DRAW HIM TO HIMSELFFFF
+        // PLAYER DOES NOT DRAW HIM TO HIMSELF
         // this.render()
     }
 

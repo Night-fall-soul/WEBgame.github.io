@@ -29,11 +29,11 @@ class ObstacleManager {
     }
 
     update(deltaTime) {
-        // gonna thank markov's chains for this
-        // we gotta get the level and change difficulty thanks to the spawn rate
+        // here we are using markov chains
+        // we have to get the level and change difficulty thanks to the spawn rate
         // also make the object move faster and be more prone to change horizontal
         // direction.
-        // lads gonna have fun with this
+        // 
 
         // first we spawn our objects
         this.spawnTimer += deltaTime;
@@ -54,13 +54,13 @@ class ObstacleManager {
         for (let i = this.obstacles.length - 1; i >= 0; i--) {
             const obs = this.obstacles[i];
 
-            // i really need to start over. may god be with me
+            // starting over
             // first time failed
             // second time failed
-            // need to study optimization :(
+            // 
             // third time failed
 
-            // FINLALYY
+            // FINALLY
 
             this.applyMarkovChain(obs);
 
@@ -109,8 +109,8 @@ class ObstacleManager {
     spawnObstacle() {
         // new obstacle, add it to this.obstacles and this.domrender.rendertemplate maybe
         //
-        // gonna change strat, we gonna create here the object, so we don't need to look
-        // in any other class (it's less elegant but idk)
+        // have to change strat, we will create here the object, so we don't need to look
+        // in any other class
 
         const dimensions = this.domRender.getCanvasDimensions();
         const width = dimensions.width;
@@ -130,7 +130,7 @@ class ObstacleManager {
         this.domRender.renderTemplate(obstacle);
     }
 
-    // dunno if its useful
+    // 
     getObstacles() {
         return this.obstacles;
     }
@@ -144,7 +144,7 @@ class ObstacleManager {
         this.spawnTimer = 0;
     }
 
-    // the me of 2 months ago didn't know what he was doing so... let me comment this fucn
+    // obsolete function
     /*
     getObstacleData(type) {
         // Logic to obtain data from this.gameConstants (?)

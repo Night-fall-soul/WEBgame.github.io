@@ -1,6 +1,6 @@
 class ScoreManager {
-    //iker i did the coockies but its the frst time i handle this shit so look through it and tell me what goes well and what goes shit ty 
-    // amine can you write your comments in english .... 
+    //iker i did the coockies but its the frst time i handle this shit so look through it and tell me what goes well and what goes bad ty 
+    // 
 
     #currentScore = 0;
 
