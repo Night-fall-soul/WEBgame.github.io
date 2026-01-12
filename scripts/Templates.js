@@ -17,22 +17,6 @@ export function createMainMenuContainer() {
                     <option value="dont">don't. :)</option>
                 </select>
             </div>
-
-            <div class="scores-section">
-                <h3>Session ranking:<h3>
-                <table aria-label="Classement de session">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nick</th>
-                            <th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody id="board-body">
-                        </tbody>
-                </table>
-            </div>
-
             <button id="start-btn">PLAY</button>
         </div>
     `;

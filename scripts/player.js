@@ -1,7 +1,7 @@
 class Player {
     position = {
         x: 0,
-        y: 0,
+        y: 0
     };
 
     constructor(name, position, size, inputManager) {
@@ -41,9 +41,9 @@ class Player {
         // everything understood now. Love you amine my brudah
 
         // 1. Input
-        
+
         if (this.isDashing) {
-            if (Date.now() - this.dashStartTime > 100) {
+            if (Date.now() - this.dashStartTime > 180) {
                 this.isDashing = false;
             }
         }
@@ -87,28 +87,26 @@ class Player {
     move(
         direction_x,
         direction_y,
-        time /* its DELTA TIME the time btween frame and frame (but its okay just a naming convention) */,
+        time /* its DELTA TIME the time btween frame and frame (but its okay just a naming convention) */
     ) {
         // calculates the new direction of movement
-        
+
         let currentSpeed = this.speed;
         if (this.isDashing) {
             currentSpeed *= 4.5 - (this.level * 0.5);
         }
-        
+
         const gameArea = document.getElementById("game-area");
         let nextX = this.position.x + (direction_x * time * currentSpeed * 0.1);
         let nextY = this.position.y + (direction_y * time * currentSpeed * 0.1);
 
-        const playerSize = this.playerSize; 
+        const playerSize = this.playerSize;
         const maxX = gameArea.clientWidth - playerSize;
         const maxY = gameArea.clientHeight - playerSize;
-        
-        this.position.x = Math.max(0, Math.min(nextX, maxX));
-        
-        this.position.y = Math.max(0, Math.min(nextY, maxY));
 
-        
+        this.position.x = Math.max(0, Math.min(nextX, maxX));
+
+        this.position.y = Math.max(0, Math.min(nextY, maxY));
 
 
         // PLAYER DOES NOT DRAW HIM TO HIMSELFFFF
@@ -160,13 +158,13 @@ class Player {
             type: "Bullet", // Domrender .bullet (css goes brr)
             position: {
                 x: this.position.x + 11,
-                y: this.position.y - 10,
+                y: this.position.y - 10
             },
             speed: 1,
             active: true,
 
             width: 8,
-            height: 8,
+            height: 8
         };
 
         this.bullets.push(bullet);
@@ -256,7 +254,7 @@ class Player {
             x: this.position.x,
             y: this.position.y,
             width: 30, // Match your CSS
-            height: 30,
+            height: 30
         };
     }
 

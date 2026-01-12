@@ -14,13 +14,15 @@ class Game {
      * @param {object} obstacleManager - ObstacleManager instance.
      * @param {object} collisionDetection - CollisionDetection instance.
      * @param {object} domRender - DOMRender instance.
+     * @param {object} inputManager - inputManager instance.
      */
     constructor(
         player,
         scoreManager,
         obstacleManager,
         collisionDetection,
-        domRender
+        domRender,
+        inputManager
     ) {
         // Store all injected dependencies
         this.player = player;
@@ -28,6 +30,10 @@ class Game {
         this.obstacleManager = obstacleManager;
         this.collisionDetection = collisionDetection;
         this.domRender = domRender;
+
+        this.inputManager = inputManager;
+        this.isGameActive = false;
+        this.wasPausePressed = false;
     }
 
     // --- Core Lifecycle Functions ---
@@ -46,6 +52,14 @@ class Game {
             this.player.position = { x: dims.width / 2 - 15, y: dims.height - 100 };
         }
 
+        if (this.player.bullets && this.player.bullets.length > 0) {
+            this.player.bullets.forEach(bullet => {
+                this.domRender.removeElement(bullet.id);
+            });
+        }
+
+        this.isGameActive = false;
+
         this.player.bullets = [];
         this.player.jett_dash = true;
     }
@@ -55,6 +69,7 @@ class Game {
      */
     start() {
         this.isPaused = false;
+        this.isGameActive = true;
         this.lastFrameTime = performance.now();
         this.gameLoop(this.lastFrameTime);
     }
@@ -64,7 +79,13 @@ class Game {
      * @param {number} currentTime - Time in milliseconds.
      */
     gameLoop(currentTime) {
-        if (this.isPaused) return;
+
+        // 3. Schedule next frame (requestAnimationFrame).
+        this.animationFrameId = requestAnimationFrame((time) => this.gameLoop(time));
+
+        if (!currentTime) {
+            currentTime = performance.now();
+        }
 
         // 1. Calculate deltaTime
         const deltaTime = currentTime - this.lastFrameTime;
@@ -72,11 +93,21 @@ class Game {
         // im. gonna. do. some. bad. things.
         this.lastFrameTime = currentTime;
 
+        // 1.5 pause input¿?
+        if (this.inputManager.isActionActive("pause")) {
+            if (!this.wasPausePressed && this.isGameActive) {
+                this.togglePause();
+            }
+            this.wasPausePressed = true;
+        } else {
+            this.wasPausePressed = false;
+        }
+
+        if (this.isPaused) return;
+
         // 2. Call this.update(deltaTime);
         this.update(deltaTime);
 
-        // 3. Schedule next frame (requestAnimationFrame).
-        this.animationFrameId = requestAnimationFrame((time) => this.gameLoop(time));
     }
 
     /**
@@ -108,18 +139,18 @@ class Game {
      */
     handleCollisions(deltaTime) {
         const obstacles = this.obstacleManager.getObstacles();
-        
+
         const playerCollision = this.collisionDetection.checkPlayerCollision(
             this.player.getBounds(),
             obstacles
         );
 
         if (playerCollision) {
-            this.player.hit(); 
+            this.player.hit();
             this.gameOver();
         }
 
-        
+
         // honestly, not the best place to do it, but im tired.
         const bullets = this.player.bullets;
 
@@ -139,7 +170,7 @@ class Game {
                 const obstacle = obstacles[j];
 
                 if (this.collisionDetection.checkOverlap(bulletBounds, obstacle)) {
-                    
+
 
                     this.domRender.removeElement(obstacle.id);
                     this.domRender.removeElement(bullet.id);
@@ -160,9 +191,38 @@ class Game {
      */
     pause() {
         this.isPaused = true;
-        if (this.animationFrameId) {
-            cancelAnimationFrame(this.animationFrameId);
+        this.domRender.showContainer("quickMenu");
+
+        const pauseScoreElement = document.getElementById("pause-score-value");
+        if (pauseScoreElement) {
+            pauseScoreElement.innerText = Math.floor(this.scoreManager.getScore());
         }
+
+        // omg i was killing the loop i lasted 4 hours to figure this out...
+        // (i solved it while i was walking around lol)
+        if (this.animationFrameId) {
+            // cancelAnimationFrame(this.animationFrameId);
+        }
+    }
+
+    togglePause() {
+        if (this.isPaused) {
+            this.resume();
+        } else {
+            this.pause();
+        }
+    }
+
+    resume() {
+        this.isPaused = false;
+        this.domRender.showContainer("game");
+        this.lastFrameTime = performance.now();
+    }
+
+    stop() {
+        this.isGameActive = false;
+        this.isPaused = true;
+        if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
     }
 
     /**
@@ -171,6 +231,7 @@ class Game {
     gameOver() {
         // Calls this.pause();
         this.pause();
+        this.isGameActive = false;
 
         // Uses this.scoreManager.getScore() to get the final score.
         const finalScore = Math.floor(this.scoreManager.getScore());

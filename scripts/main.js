@@ -26,7 +26,8 @@ const game = new Game(
     scoreManager,
     obstacleManager,
     collisionDetector,
-    render
+    render,
+    inputManager
 );
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -51,6 +52,29 @@ document.addEventListener("DOMContentLoaded", () => {
             if (typeof obstacleManager.getLevel === "function") obstacleManager.getLevel(level);
 
             startGame();
+        });
+    }
+
+    const resumeBtn = document.getElementById("resume-btn");
+    if (resumeBtn) {
+        resumeBtn.addEventListener("click", () => {
+            game.resume();
+        });
+    }
+
+    const restartPauseBtn = document.getElementById("restart-pause-btn");
+    if (restartPauseBtn) {
+        restartPauseBtn.addEventListener("click", () => {
+            game.stop();
+            startGame();
+        });
+    }
+
+    const quitBtn = document.getElementById("quit-btn");
+    if (quitBtn) {
+        quitBtn.addEventListener("click", () => {
+            game.stop();
+            render.showContainer("mainMenu");
         });
     }
 

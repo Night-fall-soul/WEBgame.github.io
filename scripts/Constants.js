@@ -21,4 +21,6 @@ export const INPUT_BINDINGS = {
     KeyK: "shoot",
     ControlLeft: "shoot",
     Space: "shoot",
+
+    Escape: "pause"
 };
