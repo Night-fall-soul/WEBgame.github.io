@@ -31,6 +31,7 @@ const game = new Game(
 );
 
 document.addEventListener("DOMContentLoaded", () => {
+    updateLeaderboard();
 
     const startBtn = document.getElementById("start-btn");
     if (startBtn) {
@@ -75,12 +76,14 @@ document.addEventListener("DOMContentLoaded", () => {
         quitBtn.addEventListener("click", () => {
             game.stop();
             render.showContainer("mainMenu");
+            updateLeaderboard();
         });
     }
 
     const restartBtn = document.getElementById("restart-btn");
     if (restartBtn) {
         restartBtn.addEventListener("click", () => {
+            updateLeaderboard();
             startGame();
         });
     }
@@ -89,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (menuBtn) {
         menuBtn.addEventListener("click", () => {
             render.showContainer("mainMenu");
+            updateLeaderboard();
         });
     }
 });
@@ -97,4 +101,14 @@ function startGame() {
     render.showContainer("game");
     game.init();
     game.start();
+}
+
+function updateLeaderboard() {
+    const list = document.getElementById("scoreboard-list");
+    if (!list) return;
+
+    const scores = scoreManager.getHighScores();
+    list.innerHTML = scores
+        .map(s => `<li style="margin-bottom: 5px;"><b>${s.name}</b>: ${s.score}</li>`)
+        .join("");
 }

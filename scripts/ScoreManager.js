@@ -38,7 +38,16 @@ class ScoreManager {
         }
     }
 
-    // --- Gestion des Cookies (Privé) ---
+    saveScore(name, score) {
+        const scores = JSON.parse(localStorage.getItem("nightFallScores")) || [];
+        scores.push({ name, score: Math.floor(score) });
+        scores.sort((a, b) => b.score - a.score);
+        localStorage.setItem("nightFallScores", JSON.stringify(scores.slice(0, 5)));
+    }
+
+    getHighScores() {
+        return JSON.parse(localStorage.getItem("nightFallScores")) || [];
+    }
 
     _setCookie(name, value, days) {
         const date = new Date();

@@ -8,6 +8,11 @@ export function createMainMenuContainer() {
                 <input type="text" id="name-field" name="name" placeholder="Sparky sparky" />
             </div>
 
+            <div>
+                <h3>Leaderboard</h3>
+                <ul id="scoreboard-list" style="list-style: none; padding: 0;"></ul>
+            </div>
+            
             <div class="input-group">
                 <label for="difficulty">How difficult may your game be:</label>
                 <select name="difficulty" id="difficulty">

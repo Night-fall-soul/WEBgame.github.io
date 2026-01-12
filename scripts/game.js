@@ -71,6 +71,11 @@ class Game {
         this.isPaused = false;
         this.isGameActive = true;
         this.lastFrameTime = performance.now();
+
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+        }
+
         this.gameLoop(this.lastFrameTime);
     }
 
@@ -235,6 +240,7 @@ class Game {
 
         // Uses this.scoreManager.getScore() to get the final score.
         const finalScore = Math.floor(this.scoreManager.getScore());
+        this.scoreManager.saveScore(this.player.name || "Unknown", finalScore);
 
         // Uses this.domRender to show the Game Over screen.
         const finalScoreEl = document.getElementById("final-score-value");
